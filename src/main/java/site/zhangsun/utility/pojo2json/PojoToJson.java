@@ -1,6 +1,8 @@
 package site.zhangsun.utility.pojo2json;
 
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -11,7 +13,7 @@ import java.util.*;
  * @since v4.0.1
  */
 public class PojoToJson {
-
+    private static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String TAIL = ",\r\n";
     public static String pojoToJson(Class clazz) {
         Field[] fields = clazz.getDeclaredFields();
@@ -69,9 +71,8 @@ public class PojoToJson {
         }
 
         if (type == java.util.Date.class) {
-            Calendar instance = Calendar.getInstance();
-            Date time = instance.getTime();
-            return builder.append(": \"").append(time).append("\"").append(TAIL);
+            DateFormat format = new SimpleDateFormat(FORMAT);
+            return builder.append(": \"").append(format.format(new Date())).append("\"").append(TAIL);
         }
 
         Field[] declaredFields = field.getType().getDeclaredFields();
