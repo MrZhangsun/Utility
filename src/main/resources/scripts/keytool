@@ -1,0 +1,2 @@
+ # 将申请的证书的转换成JKS类型
+ keytool -importkeystore -srckeystore .\2418586_www.yixuntong.tech.pfx -destkeystore yxt.jks -srcstoretype PKCS12 -deststoretype JKS
