@@ -290,6 +290,16 @@ public class RedisUtil {
 	public Boolean setIfAbsent(String key, String value) {
 		return redisTemplate.opsForValue().setIfAbsent(key, value);
 	}
+	/**
+	 * 只有在 key 不存在时设置 key 的值, 同时设置超时时间并保证原子性操作
+	 *
+	 * @param key 键
+	 * @param value 值
+	 * @return 之前已经存在返回false,不存在返回true
+	 */
+	public Boolean setIfAbsent(String key, String value, long expire, TimeUnit timeUnit) {
+		return redisTemplate.opsForValue().setIfAbsent(key, value, expire, timeUnit);
+	}
 
 	/**
 	 * 用 value 参数覆写给定 key 所储存的字符串值，从偏移量 offset 开始
