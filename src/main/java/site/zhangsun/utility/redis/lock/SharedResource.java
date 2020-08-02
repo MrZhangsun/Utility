@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 public class SharedResource {
 
     @Resource
-    private DistributedLock distributedLock;
+    private RedisDistributedLock redisDistributedLock;
 
     public SharedResource(int stock) {
         this.stock = stock;
@@ -105,7 +105,7 @@ public class SharedResource {
                 log.warn("库存不足, {}, ", stock);
                 return;
             }
-            distributedLock.lock();
+            redisDistributedLock.lock();
             // 此处非原子性操作
             stock--;
             log.info("Decrease Stock Done: {}", stock);
@@ -114,7 +114,7 @@ public class SharedResource {
                 log.error("库存超卖，出现线程安全问题，库存： {}, 当前线程ID：{}", stock, Thread.currentThread().getId());
             }
         } finally {
-            distributedLock.unlock();
+            redisDistributedLock.unlock();
         }
     }
 }

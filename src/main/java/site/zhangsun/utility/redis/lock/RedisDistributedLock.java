@@ -25,7 +25,7 @@ import java.util.concurrent.locks.Lock;
  * @since 1.0
  */
 @Component
-public class DistributedLock implements Lock {
+public class RedisDistributedLock implements Lock {
 
     /**
      * 分布式锁key标识
@@ -47,12 +47,12 @@ public class DistributedLock implements Lock {
     private RedisUtil redisUtil;
 
     @Autowired
-    public DistributedLock(RedisUtil redisUtil) {
+    public RedisDistributedLock(RedisUtil redisUtil) {
         this.redisUtil = redisUtil;
     }
 
-    public DistributedLock(long acquireTimeout, TimeUnit acquireTimeUnit,
-                           long lockedTimeout, TimeUnit lockedTimeUnit) {
+    public RedisDistributedLock(long acquireTimeout, TimeUnit acquireTimeUnit,
+                                long lockedTimeout, TimeUnit lockedTimeUnit) {
         this.defaultAcquireTimeoutMillis = acquireTimeUnit.convert(acquireTimeout, TimeUnit.MILLISECONDS);
         this.defaultLockedTimeoutMillis = lockedTimeUnit.convert(lockedTimeout, TimeUnit.MILLISECONDS);
     }
