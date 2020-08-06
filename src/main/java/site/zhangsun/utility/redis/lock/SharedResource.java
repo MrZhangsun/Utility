@@ -96,6 +96,7 @@ public class SharedResource {
      * 方式三：分布式锁
      */
     public void decreaseStock3() {
+        redisDistributedLock.lock();
         try {
             long currentThreadId = Thread.currentThread().getId();
             String currentThreadName = Thread.currentThread().getName();
@@ -105,7 +106,6 @@ public class SharedResource {
                 log.warn("库存不足, {}, ", stock);
                 return;
             }
-            redisDistributedLock.lock();
             // 此处非原子性操作
             stock--;
             log.info("Decrease Stock Done: {}", stock);

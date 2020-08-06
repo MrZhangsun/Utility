@@ -35,11 +35,11 @@ public class RedisDistributedLock implements Lock {
     /**
      * 默认锁超时时间为10秒，防止死锁的超时时间
      */
-    private long defaultLockedTimeoutMillis = 10000;
+    private long defaultLockedTimeoutMillis;
     /**
      * 默认获取锁超时时间为5秒，即获取锁等待超时时间
      */
-    private long defaultAcquireTimeoutMillis = 5000;
+    private long defaultAcquireTimeoutMillis;
 
     /**
      * Redis数据库操作工具类
@@ -49,6 +49,8 @@ public class RedisDistributedLock implements Lock {
     @Autowired
     public RedisDistributedLock(RedisUtil redisUtil) {
         this.redisUtil = redisUtil;
+        this.defaultAcquireTimeoutMillis = 50000;
+        this.defaultLockedTimeoutMillis = 60000;
     }
 
     public RedisDistributedLock(long acquireTimeout, TimeUnit acquireTimeUnit,
@@ -80,6 +82,7 @@ public class RedisDistributedLock implements Lock {
             throw new AcquireLockTimeoutException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "获取Redis锁超时",
                     String.format("超时时间: %d毫秒, 超时线程：%s", defaultAcquireTimeoutMillis, currentThreadId));
         }
+        System.out.println("线程" + currentThreadId + "获取到了锁+");
     }
 
     /**
@@ -179,6 +182,7 @@ public class RedisDistributedLock implements Lock {
             throw new IllegalThreadStateException("请勿尝试释放其他线程资源锁");
         }
         redisUtil.delete(DISTRIBUTED_LOCK_KEY);
+        System.out.println("线程" + currentThreadId + "释放了锁-");
     }
 
     /**

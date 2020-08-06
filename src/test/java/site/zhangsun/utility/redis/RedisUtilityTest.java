@@ -13,4 +13,10 @@ public class RedisUtilityTest extends UtilityApplicationTests {
     public void set() {
         redisUtil.set("name", "zhangsunjiankun");
     }
+
+    @Test
+    public void get() {
+        String savedThreadId = redisUtil.get("LOCK:DISTRIBUTED_LOCKER");
+        System.out.println(savedThreadId);
+    }
 }
